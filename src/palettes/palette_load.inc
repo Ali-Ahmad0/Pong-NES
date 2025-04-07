@@ -19,18 +19,3 @@ LOAD_SPR_PAL:
   BNE LOAD_SPR_PAL
 
   RTS
-
-; Color palettes
-BCK_PAL:
-  ; Background Palette
-  .byte $0f, $00, $00, $00
-  .byte $0f, $00, $00, $00
-  .byte $0f, $00, $00, $00
-  .byte $0f, $00, $00, $00
-
-SPR_PAL:
-  ; Sprite Palette
-  .byte $0f, $00, $00, $00
-  .byte $0f, $00, $00, $00
-  .byte $0f, $00, $00, $00
-  .byte $0f, $00, $00, $00

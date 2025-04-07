@@ -5,7 +5,8 @@
 .segment "STARTUP"
 
 .segment "CODE"
-.include "common/palettes.inc"
+.include "palettes/palette_load.inc"
+.include "palettes/palette_data.inc"
 
 ; Reset Interrupt
 RESET:
@@ -53,11 +54,19 @@ RESET:
   ; Second wait for vblank
   JSR VBLANKWAIT
 
-  ; Load background palettes
+  ; Load background palette
+  LDA #$3F
+  STA PPU_ADDR    ; High byte of palette address
+  LDA #$00
+  STA PPU_ADDR    ; Low byte (starting at $3F00)
   LDX #$00
   JSR LOAD_BCK_PAL
 
-  ; Load sprite palettes
+  ; Load sprite palette
+  LDA #$3F
+  STA PPU_ADDR    ; High byte of palette address  
+  LDA #$10
+  STA PPU_ADDR    ; Low byte (starting at $3F10)
   LDX #$00
   JSR LOAD_SPR_PAL
 
