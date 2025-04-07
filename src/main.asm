@@ -5,8 +5,11 @@
 .segment "STARTUP"
 
 .segment "CODE"
-.include "palettes/palette_load.inc"
+.include "palettes/palette_load.asm"
 .include "palettes/palette_data.inc"
+
+.include "nametable/nam_load.asm"
+.include "nametable/nam_data.inc"
 
 ; Reset Interrupt
 RESET:
@@ -54,20 +57,17 @@ RESET:
   ; Second wait for vblank
   JSR VBLANKWAIT
 
-  ; Load background palette
-  LDA #$3F
-  STA PPU_ADDR    ; High byte of palette address
+  ; Reset registers
   LDA #$00
-  STA PPU_ADDR    ; Low byte (starting at $3F00)
   LDX #$00
+  
+  ; Load nametable data
+  JSR LOAD_NAM
+
+  ; Load background palette
   JSR LOAD_BCK_PAL
 
   ; Load sprite palette
-  LDA #$3F
-  STA PPU_ADDR    ; High byte of palette address  
-  LDA #$10
-  STA PPU_ADDR    ; Low byte (starting at $3F10)
-  LDX #$00
   JSR LOAD_SPR_PAL
 
   ; Reset PPU Scroll
@@ -114,3 +114,4 @@ VBLANKWAIT:
   .word RESET 
 
 .segment "CHARS"
+  .incbin "../assets/charset.chr"
