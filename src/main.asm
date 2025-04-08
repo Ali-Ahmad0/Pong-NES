@@ -72,7 +72,8 @@ RESET:
 
   ; Reset PPU Scroll
   LDA #$00
-  STA PPU_SCROLL
+  STA PPU_SCROLL  ; Set X scroll to 0
+  STA PPU_SCROLL  ; Set Y scroll to 0
 
   ; Enable interrupts 
   CLI
