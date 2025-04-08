@@ -5,6 +5,8 @@
 .segment "STARTUP"
 
 .segment "CODE"
+.include "vblankwait.asm"
+
 .include "palettes/palette_load.asm"
 .include "palettes/palette_data.inc"
 
@@ -102,12 +104,6 @@ NMI:
   STA OAM_DMA
 
   RTI
-
-; Wait for vblank subroutine
-VBLANKWAIT:
-  BIT PPU_STATUS
-  BPL VBLANKWAIT
-  RTS
 
 ; Define what to do when interrupt occurs
 .segment "VECTORS"
