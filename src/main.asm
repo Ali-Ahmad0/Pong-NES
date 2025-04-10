@@ -13,6 +13,9 @@
 .include "nametable/nam_load.asm"
 .include "nametable/nam_data.inc"
 
+.include "sprites/sprite_load.asm"
+.include "sprites/sprite_data.inc"
+
 ; Reset Interrupt
 RESET:
   SEI ; disable IRQs
@@ -71,6 +74,9 @@ RESET:
 
   ; Load sprite palette
   JSR LOAD_SPR_PAL
+
+  ; Load sprites
+  JSR LOAD_SPRITES
 
   ; Reset PPU Scroll
   LDA #$00

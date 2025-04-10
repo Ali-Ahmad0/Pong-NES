@@ -8,7 +8,7 @@ BCK_PAL:
 
 SPR_PAL:
   ; Sprite Palette
-  .byte $0f, $00, $00, $00
+  .byte $0f, $30, $00, $00
   .byte $0f, $00, $00, $00
   .byte $0f, $00, $00, $00
   .byte $0f, $00, $00, $00
