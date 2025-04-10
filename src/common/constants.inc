@@ -18,3 +18,14 @@
 ; Controller Input
   JOY_1       =   $4016
   JOY_2       =   $4017
+
+; Game states
+  MAIN_MENU   =   $00
+  RUNNING     =   $01
+  EXIT_GAME   =   $02
+
+; Walls
+  RIGHT_WALL  =   $F4
+  TOP_WALL    =   $20
+  BOTTOM_WALL =   $E0
+  LEFT_WALL   =   $04

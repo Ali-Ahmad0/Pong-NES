@@ -1,2 +1,2 @@
 NAMETABLE:
-    .incbin "../../assets/test.nam"
+    .incbin "../../assets/bgrnd.nam"
