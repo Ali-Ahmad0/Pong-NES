@@ -16,6 +16,8 @@
 .include "sprites/sprite_load.asm"
 .include "sprites/sprite_data.inc"
 
+.include "game/pong_ball.asm"
+
 ; Reset Interrupt
 RESET:
   SEI ; disable IRQs
@@ -98,6 +100,13 @@ RESET:
   LDA #%10010000
   STA APU_STATUS
 
+  ; Store ball position
+  LDA #$7C
+  STA ball_pos_x
+
+  LDA #$74
+  STA ball_pos_y
+  
   ; Set ball velocity
   LDA #%00000000
   STA ball_vel_x
@@ -116,64 +125,8 @@ NMI:
   LDA #$02
   STA OAM_DMA
 
-  ; Move ball x
-  LDA ball_vel_x
-  AND #%10000000
-  BEQ MOV_NEG_X
-  JMP MOV_POS_X
-
-  MOV_POS_X:
-    ; Load X position
-    LDA $020B
-    CLC
-    ADC #$01  ; Move right
-
-    ; Save X position
-    STA $020B
-
-    JMP END_MOV_X
-
-  MOV_NEG_X:
-    ; Load X position
-    LDA $020B
-    SEC
-    SBC #$01  ; Move left
-
-    ; Save X position
-    STA $020B
-    JMP END_MOV_X
-
-  END_MOV_X:
-    ; Moving X done
+  JSR MOV_BALL
   
-  ; Move ball y
-  LDA ball_vel_y
-  AND #%10000000
-  BEQ MOV_NEG_Y
-  JMP MOV_POS_Y
-
-  MOV_POS_Y:
-    ; Load X position
-    LDA $0208
-    CLC
-    ADC #$01  ; Move right
-
-    ; Save X position
-    STA $0208
-
-    JMP END_MOV_Y
-  MOV_NEG_Y:
-    ; Load X position
-    LDA $0208
-    SEC
-    SBC #$01  ; Move left
-
-    ; Save X position
-    STA $0208
-    JMP END_MOV_Y
-
-  END_MOV_Y:
-    ; Moving Y done
   RTI
 
 ; Define what to do when interrupt occurs
