@@ -108,16 +108,16 @@ RESET:
   STA ball_pos_y
   
   ; Set ball velocity
-  LDA #%00000000
+  LDA #%00000000  ; positive x
   STA ball_vel_x
   
-  LDA #%10000000
+  LDA #%10000000  ; negative y
   STA ball_vel_x
 
   FOREVER:
     JMP FOREVER
 
-; NMI Interrupt
+; Non Maskable Interrupt
 NMI:
   ; Load sprite range
   LDA #$00
@@ -131,7 +131,7 @@ NMI:
 
 ; Define what to do when interrupt occurs
 .segment "VECTORS"
-  .word NMI   ; Non Maskable Interrupt
+  .word NMI   
   .word RESET 
 
 .segment "CHARS"

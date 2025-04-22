@@ -10,4 +10,8 @@
     ball_vel_x: .res 1
     ball_vel_y: .res 1
 
-    
+    paddle_1_pos_x: .res 1
+    paddle_1_pos_y: .res 1
+
+    paddle_2_pos_x: .res 1
+    paddle_2_pos_y: .res 1

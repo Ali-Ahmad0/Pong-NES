@@ -25,7 +25,7 @@
   EXIT_GAME   =   $02
 
 ; Walls
-  RIGHT_WALL  =   $F2
+  RIGHT_WALL  =   $F0
   TOP_WALL    =   $04
   BOTTOM_WALL =   $E4
   LEFT_WALL   =   $0A

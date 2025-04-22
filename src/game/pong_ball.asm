@@ -70,7 +70,6 @@ MOV_BALL:
     LDA $0208
     CLC
     ADC #$01  ; Move right
-
     
     JMP END_MOV_Y
   MOV_NEG_Y:
