@@ -16,6 +16,11 @@
 .include "sprites/sprite_load.asm"
 .include "sprites/sprite_data.inc"
 
+.include "controller/controller_1.asm"
+.include "controller/controller_2.asm"
+
+.include "game/paddle_1.asm"
+.include "game/paddle_2.asm"
 .include "game/pong_ball.asm"
 
 ; Reset Interrupt
@@ -125,8 +130,15 @@ NMI:
   LDA #$02
   STA OAM_DMA
 
+  ; Handle game updates
   JSR MOV_BALL
-  
+
+  JSR LATCH_CONTROLLER_1
+  JSR LATCH_CONTROLLER_2
+
+  JSR MOV_PADDLE_1
+  JSR MOV_PADDLE_2
+
   RTI
 
 ; Define what to do when interrupt occurs

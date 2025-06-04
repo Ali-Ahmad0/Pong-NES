@@ -1,0 +1,2 @@
+MOV_PADDLE_2:
+  RTS
