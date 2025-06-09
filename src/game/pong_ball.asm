@@ -2,6 +2,7 @@ MOV_BALL:
   HANDLE_WALL_X:
     LDA $020B
     
+    ; Reset ball position if out of bounds
     CMP #LEFT_WALL
     BCC RESET_BALL_POS
 
@@ -17,11 +18,12 @@ MOV_BALL:
 
       ; Reset Y position
       LDA #$74
-      STA $0208
+      STA $0208  
 
   HANDLE_WALL_Y:
     LDA $0208
 
+    ; Invert y velocity for walls
     CMP #TOP_WALL
     BCC INVERT_VEL_Y
 

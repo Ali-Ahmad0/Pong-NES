@@ -5,11 +5,16 @@ MOV_PADDLE_2:
     AND #$08
     BEQ READ_DOWN_2
 
+    ; Check if cannot move up
+    LDA $021C
+    CMP #TOP_WALL
+    BCC READ_DOWN_2
+
     LDX #$00
     MOV_UP_2:
       LDA $021C, x  ; Load paddle y position
       SEC           ; Set carry
-      SBC #$01      ; y = y - 1
+      SBC #$02      ; y = y - 2
 
       STA $021C, x  ; Save paddle y position
 
@@ -28,11 +33,16 @@ MOV_PADDLE_2:
     AND #$04
     BEQ READ_DONE_2
 
+    ; Check if cannot move down
+    LDA $0228
+    CMP #BOTTOM_WALL
+    BCS READ_DONE_2
+
     LDX #$00
     MOV_DOWN_2:
       LDA $021C, x  ; Load paddle y position
       CLC           ; Clear carry
-      ADC #$01      ; y = y + 1
+      ADC #$02      ; y = y + 2
 
       STA $021C, x  ; Save paddle y position
 

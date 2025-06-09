@@ -1,10 +1,11 @@
 .segment "ZEROPAGE"
-    ; Temporary variable
-    temp: .res 1
     
     ; (Not being used yet)
     game_state: .res 1
 
+    ; Temporary variable
+    temp: .res 1
+    
     ; Gamepad buttons
     buttons_1: .res 1
     buttons_2: .res 1
