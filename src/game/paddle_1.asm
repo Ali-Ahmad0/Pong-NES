@@ -1,12 +1,12 @@
 MOV_PADDLE_1:
-  READ_UP:
+  READ_UP_1:
     ; Check for up button pressed
     LDA buttons_1
     AND #$08
-    BEQ READ_DOWN
+    BEQ READ_DOWN_1
 
     LDX #$00
-    MOVE_UP:
+    MOV_UP_1:
       LDA $020C, x  ; Load paddle y position
       SEC           ; Set carry
       SBC #$01      ; y = y - 1
@@ -20,16 +20,16 @@ MOV_PADDLE_1:
       TAX
 
       CPX #$10
-      BNE MOVE_UP
+      BNE MOV_UP_1 
 
-  READ_DOWN:
+  READ_DOWN_1:
     ; Check for down button pressed
     LDA buttons_1
     AND #$04
-    BEQ READ_DONE
+    BEQ READ_DONE_1
 
     LDX #$00
-    MOVE_DOWN:
+    MOV_DOWN_1:
       LDA $020C, x  ; Load paddle y position
       CLC           ; Clear carry
       ADC #$01      ; y = y + 1
@@ -43,7 +43,7 @@ MOV_PADDLE_1:
       TAX
 
       CPX #$10
-      BNE MOVE_DOWN
+      BNE MOV_DOWN_1
 
-  READ_DONE:
+  READ_DONE_1:
     RTS

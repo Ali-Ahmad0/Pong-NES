@@ -104,13 +104,6 @@ RESET:
   ; Enable APU
   LDA #%10010000
   STA APU_STATUS
-
-  ; Store ball position
-  LDA #$7C
-  STA ball_pos_x
-
-  LDA #$74
-  STA ball_pos_y
   
   ; Set ball velocity
   LDA #%00000000  ; positive x
