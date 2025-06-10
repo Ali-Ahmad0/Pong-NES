@@ -5,6 +5,9 @@
 
     ; Temporary variable
     temp: .res 1
+
+    ; Ball start delay
+    delay_timer: .res 1
     
     ; Gamepad buttons
     buttons_1: .res 1
@@ -15,3 +18,6 @@
     ball_vel_x: .res 1
 
     ball_vel_y: .res 1
+
+    ; Index for initial velocity
+    ball_vel_index: .res 1

@@ -1,24 +1,29 @@
+.include "delay_timer.asm"
+
+; +ve x | +ve y, -ve x | +ve y, +ve x | -ve y, -ve x | -ve y
+VELOCITES_X:
+  .byte %00000000, %10000000, %00000000, %10000000 
+
+VELOCITES_Y:
+  .byte %00000000, %00000000, %10000000, %10000000
+
 MOV_BALL:
-  HANDLE_WALL_X:
-    LDA $020B
-    
-    ; Reset ball position if out of bounds
-    CMP #LEFT_WALL
-    BCC RESET_BALL_POS
+  ; Check if need to add delay
+  CPY #$FF
+  BEQ HANDLE_DELAY
 
-    CMP #RIGHT_WALL
-    BCS RESET_BALL_POS
+  ; Handle movement normally
+  JMP HANDLE_WALL_Y
 
-    JMP HANDLE_WALL_Y
+  HANDLE_DELAY:
+    JSR INCREMENT_TIMER
 
-    RESET_BALL_POS:
-      ; Reset X position
-      LDA #$7C
-      STA $020B
+    LDA delay_timer
+    CMP #$00
+    BNE SKIP_MOV_BALL
 
-      ; Reset Y position
-      LDA #$74
-      STA $0208  
+    ; Reset the delay flag now
+    LDY #$00
 
   HANDLE_WALL_Y:
     LDA $0208
@@ -30,11 +35,65 @@ MOV_BALL:
     CMP #BOTTOM_WALL
     BCS INVERT_VEL_Y
 
-    JMP HANDLE_PADDLES
+    JMP HANDLE_WALL_X
     INVERT_VEL_Y:
       LDA ball_vel_y
       EOR #%10000000
       STA ball_vel_y
+
+  HANDLE_WALL_X:
+    LDA $020B
+    
+    ; Reset ball position if out of bounds
+    CMP #LEFT_WALL
+    BCC RESET_BALL_POS
+
+    CMP #RIGHT_WALL
+    BCS RESET_BALL_POS
+
+    JMP HANDLE_PADDLES
+
+    RESET_BALL_POS:
+      ; Reset X position
+      LDA #$7C
+      STA $020B
+
+      ; Reset Y position
+      LDA #$74
+      STA $0208
+
+      ; A flag to indicate we need to add delay
+      LDY #$FF
+
+      ; Set new initial velocity
+      LDX ball_vel_index
+
+      LDA VELOCITES_X, X
+      STA ball_vel_x
+
+      LDA VELOCITES_Y, X
+      STA ball_vel_y
+
+      ; Handle index range (0 - 3)
+      LDA ball_vel_index
+      CMP #$03
+      BEQ RESET_INDEX
+
+      CLC
+      ADC #$01
+      JMP STORE_INDEX
+
+      RESET_INDEX:
+        LDA #$00
+
+      STORE_INDEX:
+        STA ball_vel_index
+
+      JMP HANDLE_PADDLES
+
+  ; Had to add 2 jumps cuz range error
+  SKIP_MOV_BALL:
+    JMP END_MOV_BALL
 
   HANDLE_PADDLES:
     HANDLE_PADDLE_1:
@@ -43,7 +102,7 @@ MOV_BALL:
       CMP #$16  ; Compare with paddle 1 right x position
       BCS HANDLE_PADDLE_2
 
-      CMP #$12  ; Compare with paddle 1 left x position
+      CMP #$14  ; Compare with paddle 1 mid x position
       BCC HANDLE_PADDLE_2
 
       LDX $020C ; Paddle 1 first sprite y position
@@ -56,7 +115,7 @@ MOV_BALL:
       CMP #$E4  ; Compare with paddle 2 left x position
       BCC CHECK_VEL_X
 
-      CMP #$E8  ; Compare with paddle 2 right x position
+      CMP #$E6  ; Compare with paddle 2 mid x position
       BCS CHECK_VEL_X
 
       LDX $021C ; Paddle 2 first sprite y position
@@ -95,6 +154,9 @@ MOV_BALL:
           EOR #%10000000
           STA ball_vel_x
 
+          JMP CHECK_VEL_X
+
+
   CHECK_VEL_X:
     ; Move ball x
     LDA ball_vel_x
@@ -106,7 +168,7 @@ MOV_BALL:
     ; Load x position
     LDA $020B
     CLC
-    ADC #$01  ; Move right
+    ADC #$02  ; Move right
 
     JMP END_MOV_X
 
@@ -114,7 +176,7 @@ MOV_BALL:
     ; Load x position
     LDA $020B
     SEC
-    SBC #$01  ; Move left
+    SBC #$02  ; Move left
 
     JMP END_MOV_X
 
@@ -148,4 +210,5 @@ MOV_BALL:
     ; Save y position
     STA $0208
   
+  END_MOV_BALL:
   RTS

@@ -112,6 +112,14 @@ RESET:
   LDA #%10000000  ; negative y
   STA ball_vel_x
 
+  LDA #$00
+  STA ball_vel_index
+
+  ; Initialize delay flag and timer
+  LDY #$FF
+  LDA #$00
+  STA delay_timer
+  
   FOREVER:
     JMP FOREVER
 
@@ -122,6 +130,7 @@ NMI:
   STA OAM_ADDR
   LDA #$02
   STA OAM_DMA
+
 
   ; Handle game updates
   JSR MOV_BALL
