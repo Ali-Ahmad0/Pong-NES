@@ -19,10 +19,10 @@ MOV_PADDLE_2:
       STA $021C, x  ; Save paddle y position
 
       ; Counter + 4
-      TXA
-      CLC
-      ADC #$04
-      TAX
+      INX
+      INX
+      INX
+      INX
 
       CPX #$10
       BNE MOV_UP_2
